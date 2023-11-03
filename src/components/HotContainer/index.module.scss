@@ -1,0 +1,22 @@
+.hotUrl{
+  position: relative;
+  transition: all .3s;
+  padding: 2px 0;
+  &:after{
+    position: absolute;
+    content: "";
+    height: 2px;
+    width:0px;
+    left:0;
+    bottom:0;
+    border-radius: 8px;
+    transition: all .3s;
+    background-color: var(--baiwu-hot-url-underline);
+  }
+  &:hover{
+    transform: translate(4px);
+    &:after{
+    width:100%;
+    }
+  }
+}

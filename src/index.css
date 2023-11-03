@@ -1,0 +1,63 @@
+:root {
+  overflow-x: hidden;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  /* 正常模式 */
+  --baiwu-bg-color:rgb(240, 242, 245);
+  --baiwu-scrollbar: rgba(60, 60, 67, 0.4);
+  --baiwu-scrollbar-hover: rgba(0, 0, 0, 0.4);
+  --baiwu-hot-url-underline:rgba(0,0,0,.13)
+}
+
+/* 暗黑模式 */
+[data-theme=light]{
+  --baiwu-bg-color:rgb(16, 16, 10);
+  --baiwu-scrollbar: rgba(200, 200, 223, 0.4);
+  --baiwu-scrollbar-hover: rgba(0, 0, 0, 0.3);
+  --baiwu-hot-url-underline:rgba(255,255,255,.08)
+}
+
+html,body,#root{
+  background-color: var(--baiwu-bg-color)
+}
+
+#hot-header{
+  padding:24px 4vw;
+}
+
+/* 修改滚动条样式 */
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--baiwu-scrollbar);
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--baiwu-scrollbar-hover);
+}
+
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+}
