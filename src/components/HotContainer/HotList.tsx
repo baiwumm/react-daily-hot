@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 16:01:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-02 11:12:23
+ * @LastEditTime: 2023-11-03 16:58:10
 */
 import 'dayjs/locale/zh-cn'
 
@@ -111,7 +111,7 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
       >
         <Skeleton active loading={loading} paragraph={{ rows: 10 }}>
           <List
-            rowKey="id"
+            rowKey={(item) => item.id + item.hot}
             size="small"
             dataSource={get(data, 'list', [])}
             pagination={false}

@@ -4,27 +4,35 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 15:29:07
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-03 09:53:52
+ * @LastEditTime: 2023-11-03 16:03:19
  */
+import { useLocalStorageState } from 'ahooks'
 import { App, ConfigProvider, theme } from 'antd'
 import zhCN from 'antd/locale/zh_CN';
-import { filter, includes } from 'lodash-es'
+import { eq, filter, includes } from 'lodash-es'
 import { useState } from 'react'
+import { Helmet } from 'react-helmet'
 
 import ActionButtons from '@/components/ActionButtons'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import HotContainer from '@/components/HotContainer'
-import { LOCAL_KEY } from '@/enums'
-import type { HotListConfig, HotTypes } from '@/types'
+import { LOCAL_KEY, THEME } from '@/enums'
+import type { HotListConfig, HotTypes, ThemeName } from '@/types'
 import { getLocalStorageItem } from '@/utils'
 
 import { hotDataSource } from './components/HotContainer/config'
-const { darkAlgorithm, compactAlgorithm, useToken } = theme;
 
 function AppConatiner() {
   // 主题色
   const [primaryColor, setPrimaryColor] = useState(getLocalStorageItem(LOCAL_KEY.PRIMARYCOLOR) || '#1677ff');
+  // 主题模式
+  const [siteTheme, setSiteTheme] = useLocalStorageState<ThemeName>(
+    LOCAL_KEY.THEME,
+    { defaultValue: THEME.LIGHT },
+  );
+  // 是否是暗黑主题
+  const isDark = eq(siteTheme, THEME.DARK)
   /**
   * @description: 过滤掉不显示的热榜
   */
@@ -35,27 +43,37 @@ function AppConatiner() {
   }
   const [hotConfig, setHotConfig] = useState<HotListConfig[]>(filterHiddenHot())
   return (
-    <ConfigProvider locale={zhCN} theme={{
-      // algorithm: darkAlgorithm
-      token: {
-        colorPrimary: primaryColor,
-      },
-    }}>
-      <App>
-        <div id="appContainer" style={{
-          // backgroundColor: 'var(--baiwu-bg-color)'
-        }}>
-          {/* 头部布局 */}
-          <Header primaryColor={primaryColor} setPrimaryColor={setPrimaryColor} />
-          {/* 今日热榜 */}
-          <HotContainer primaryColor={primaryColor} hotConfig={hotConfig} />
-          {/* 底部版权 */}
-          <Footer />
-          {/* 悬浮按钮 */}
-          <ActionButtons setHotConfig={setHotConfig} filterHiddenHot={filterHiddenHot} />
-        </div>
-      </App>
-    </ConfigProvider>
+    <>
+      <Helmet encodeSpecialCharacters={false}>
+        <html lang='zh-CN' data-theme={siteTheme} />
+      </Helmet>
+      <ConfigProvider locale={zhCN} theme={{
+        algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+        token: {
+          colorPrimary: primaryColor,
+        },
+      }}>
+        <App>
+          <div id="appContainer" style={{
+            // backgroundColor: 'var(--baiwu-bg-color)'
+          }}>
+            {/* 头部布局 */}
+            <Header primaryColor={primaryColor} setPrimaryColor={setPrimaryColor} />
+            {/* 今日热榜 */}
+            <HotContainer primaryColor={primaryColor} hotConfig={hotConfig} />
+            {/* 底部版权 */}
+            <Footer />
+            {/* 悬浮按钮 */}
+            <ActionButtons
+              setHotConfig={setHotConfig}
+              filterHiddenHot={filterHiddenHot}
+              isDark={isDark}
+              setSiteTheme={setSiteTheme}
+            />
+          </div>
+        </App>
+      </ConfigProvider>
+    </>
   )
 }
 

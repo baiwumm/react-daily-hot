@@ -4,19 +4,21 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-11-02 09:07:36
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-03 09:59:51
+ * @LastEditTime: 2023-11-03 16:21:43
  */
 import { ClearOutlined, SettingOutlined } from '@ant-design/icons';
 import { useBoolean } from 'ahooks'
-import { Card, Drawer, Flex, FloatButton, Image, Popconfirm, Space, Switch, Typography } from 'antd'
+import { App, Card, Drawer, Flex, FloatButton, Image, Popconfirm, Space, Switch, Typography } from 'antd'
 import { concat, eq, filter, includes, map } from 'lodash-es'
-import { FC, useState } from 'react'
+import { FC, MouseEvent, useState } from 'react'
 
-import { LOCAL_KEY } from '@/enums'
-import type { HotListConfig, HotTypes } from '@/types'
+import { LOCAL_KEY, THEME } from '@/enums'
+import type { HotListConfig, HotTypes, ThemeName } from '@/types'
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils'
 
 import { hotDataSource } from '../HotContainer/config'
+import MoonIcon from './MoonIcon'
+import SunnyIcon from './SunnyIcon'
 import ThemeIcon from './ThemeIcon';
 
 const { Text } = Typography
@@ -24,9 +26,12 @@ const { Text } = Typography
 type ActionButtonsProps = {
   setHotConfig: (value: HotListConfig[]) => void;
   filterHiddenHot: () => HotListConfig[];
+  isDark: boolean;
+  setSiteTheme: (value: ThemeName) => void;
 }
 
-const ActionButtons: FC<ActionButtonsProps> = ({ setHotConfig, filterHiddenHot }) => {
+const ActionButtons: FC<ActionButtonsProps> = ({ setHotConfig, filterHiddenHot, isDark, setSiteTheme }) => {
+  const { message } = App.useApp()
   // 受控展开，需配合 trigger 一起使用
   const [open, setOpen] = useState<boolean>(false)
   // 抽屉
@@ -42,13 +47,14 @@ const ActionButtons: FC<ActionButtonsProps> = ({ setHotConfig, filterHiddenHot }
   /**
    * @description: 切换热榜回调
    */
-  const onChangeHotShow = (checked: boolean, value: HotTypes) => {
+  const onChangeHotShow = (checked: boolean, value: HotTypes, label: string) => {
     // 不显示的榜单列表
     const hiddenHotList = getLocalStorageItem<HotTypes[]>(LOCAL_KEY.HOTHIDDEN) || [];
     // true 从列表移除，否则加入列表
     const result = checked ? filter(hiddenHotList, (item: HotTypes) => !eq(item, value)) : concat(hiddenHotList, value)
     setLocalStorageItem(LOCAL_KEY.HOTHIDDEN, result)
     setHotConfig(filterHiddenHot())
+    message.success(`${checked ? '开启' : '关闭'}${label}榜单成功`)
   }
   /**
    * @description: 渲染显示设置
@@ -70,7 +76,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ setHotConfig, filterHiddenHot }
                   disabled={filterHiddenHot().length <= 1 && !includes(hiddenHotList, value)}
                   checkedChildren="开"
                   unCheckedChildren="关"
-                  onChange={(checked) => onChangeHotShow(checked, value)}
+                  onChange={(checked) => onChangeHotShow(checked, value, label)}
                   checked={!includes(hiddenHotList, value)}
                 />
               </Flex>
@@ -79,6 +85,14 @@ const ActionButtons: FC<ActionButtonsProps> = ({ setHotConfig, filterHiddenHot }
         }
       </Flex>
     )
+  }
+
+  /**
+   * @description: 切换主题
+   */
+  const onChangeTheme = (e: MouseEvent) => {
+    // toggleAnimationTheme(e, isDark);
+    setSiteTheme(isDark ? THEME.LIGHT : THEME.DARK)
   }
   return (
     <>
@@ -98,6 +112,12 @@ const ActionButtons: FC<ActionButtonsProps> = ({ setHotConfig, filterHiddenHot }
             tooltip='重置配置'
           />
         </Popconfirm>
+        {/* 暗黑模式 */}
+        <FloatButton
+          icon={isDark ? <SunnyIcon /> : <MoonIcon />}
+          tooltip={`${isDark ? '白天' : '暗黑'}模式`}
+          onClick={onChangeTheme}
+        />
         {/* 热榜显示设置 */}
         <FloatButton
           icon={<SettingOutlined />}

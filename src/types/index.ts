@@ -34,3 +34,9 @@ export type HotListConfig = {
  * @author: 白雾茫茫丶
  */
 export type UpdateTime = Record<HotTypes, number>
+
+/**
+ * @description: 主题模式
+ * @author: 白雾茫茫丶
+ */
+export type ThemeName = 'light' | 'dark';
