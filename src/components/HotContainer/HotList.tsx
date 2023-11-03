@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 16:01:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-03 16:58:10
+ * @LastEditTime: 2023-11-03 17:47:52
 */
 import 'dayjs/locale/zh-cn'
 
@@ -128,7 +128,7 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
                 <List.Item style={{ justifyContent: 'start' }}>
                   <Tag
                     bordered={false}
-                    color={hasWeiboLabel ? weiboLable[item.label] : (hotTagColor[index] || undefined)}>
+                    color={hasWeiboLabel && item.label ? weiboLable[item.label] : (hotTagColor[index] || undefined)}>
                     {hasWeiboLabel ? item.label : index + 1}
                   </Tag>
                   <Text

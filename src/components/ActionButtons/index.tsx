@@ -4,13 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-11-02 09:07:36
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-03 16:21:43
+ * @LastEditTime: 2023-11-03 17:42:54
  */
 import { ClearOutlined, SettingOutlined } from '@ant-design/icons';
 import { useBoolean } from 'ahooks'
 import { App, Card, Drawer, Flex, FloatButton, Image, Popconfirm, Space, Switch, Typography } from 'antd'
 import { concat, eq, filter, includes, map } from 'lodash-es'
-import { FC, MouseEvent, useState } from 'react'
+import { FC, useState } from 'react'
 
 import { LOCAL_KEY, THEME } from '@/enums'
 import type { HotListConfig, HotTypes, ThemeName } from '@/types'
@@ -90,7 +90,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({ setHotConfig, filterHiddenHot, 
   /**
    * @description: 切换主题
    */
-  const onChangeTheme = (e: MouseEvent) => {
+  const onChangeTheme = () => {
     // toggleAnimationTheme(e, isDark);
     setSiteTheme(isDark ? THEME.LIGHT : THEME.DARK)
   }
