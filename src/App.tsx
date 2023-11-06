@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 15:29:07
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-03 16:03:19
+ * @LastEditTime: 2023-11-06 09:07:37
  */
 import { useLocalStorageState } from 'ahooks'
 import { App, ConfigProvider, theme } from 'antd'
@@ -46,6 +46,15 @@ function AppConatiner() {
     <>
       <Helmet encodeSpecialCharacters={false}>
         <html lang='zh-CN' data-theme={siteTheme} />
+        <script type="text/javascript">
+          {
+            `(function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "jm0kos9fw7");`
+          }
+        </script>
       </Helmet>
       <ConfigProvider locale={zhCN} theme={{
         algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
