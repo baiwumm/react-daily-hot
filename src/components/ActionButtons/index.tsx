@@ -4,9 +4,9 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-11-02 09:07:36
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-03 17:42:54
+ * @LastEditTime: 2023-11-06 09:30:17
  */
-import { ClearOutlined, SettingOutlined } from '@ant-design/icons';
+import { ClearOutlined, HomeOutlined, SettingOutlined } from '@ant-design/icons';
 import { useBoolean } from 'ahooks'
 import { App, Card, Drawer, Flex, FloatButton, Image, Popconfirm, Space, Switch, Typography } from 'antd'
 import { concat, eq, filter, includes, map } from 'lodash-es'
@@ -99,8 +99,16 @@ const ActionButtons: FC<ActionButtonsProps> = ({ setHotConfig, filterHiddenHot, 
       <FloatButton.Group
         open={open}
         icon={<ThemeIcon />}
+        badge={{ dot: true }}
         trigger="click"
         onOpenChange={(open) => setOpen(open)}>
+        {/* 访问博客 */}
+        <FloatButton
+          href="https://baiwumm.com/"
+          target="_blank"
+          icon={<HomeOutlined />}
+          tooltip='访问博客'
+        />
         {/* 重置配置 */}
         <Popconfirm
           title="温馨提醒"
