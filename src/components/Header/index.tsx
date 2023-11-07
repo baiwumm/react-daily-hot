@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 15:51:30
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-03 16:51:37
+ * @LastEditTime: 2023-11-07 15:50:06
  */
 import { DownOutlined } from '@ant-design/icons'
 import { useInterval, useResponsive, useUnmount } from 'ahooks'
@@ -92,8 +92,14 @@ const Header: FC<HeaderProps> = ({ primaryColor, setPrimaryColor }) => {
         <Col span={8} style={{ display: md ? 'block' : 'none' }}>
           {/* 实时日期 */}
           <Space direction="vertical" size={0} style={{ display: 'flex' }} align="center" className="hot-header-time">
-            <Text>{nowTime}</Text>
-            {renderLunarCalendar()}
+            {
+              nowTime ? (
+                <>
+                  <Text>{nowTime}</Text>
+                  {renderLunarCalendar()}
+                </>
+              ) : <Text type='secondary'>正在加载时间...</Text>
+            }
           </Space>
         </Col>
         <Col span={md ? 8 : 12}>

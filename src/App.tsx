@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 15:29:07
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-06 09:07:37
+ * @LastEditTime: 2023-11-07 15:50:54
  */
 import { useLocalStorageState } from 'ahooks'
 import { App, ConfigProvider, theme } from 'antd'
@@ -54,23 +54,19 @@ function AppConatiner() {
         },
       }}>
         <App>
-          <div id="appContainer" style={{
-            // backgroundColor: 'var(--baiwu-bg-color)'
-          }}>
-            {/* 头部布局 */}
-            <Header primaryColor={primaryColor} setPrimaryColor={setPrimaryColor} />
-            {/* 今日热榜 */}
-            <HotContainer primaryColor={primaryColor} hotConfig={hotConfig} />
-            {/* 底部版权 */}
-            <Footer />
-            {/* 悬浮按钮 */}
-            <ActionButtons
-              setHotConfig={setHotConfig}
-              filterHiddenHot={filterHiddenHot}
-              isDark={isDark}
-              setSiteTheme={setSiteTheme}
-            />
-          </div>
+          {/* 头部布局 */}
+          <Header primaryColor={primaryColor} setPrimaryColor={setPrimaryColor} />
+          {/* 今日热榜 */}
+          <HotContainer primaryColor={primaryColor} hotConfig={hotConfig} />
+          {/* 底部版权 */}
+          <Footer />
+          {/* 悬浮按钮 */}
+          <ActionButtons
+            setHotConfig={setHotConfig}
+            filterHiddenHot={filterHiddenHot}
+            isDark={isDark}
+            setSiteTheme={setSiteTheme}
+          />
         </App>
       </ConfigProvider>
     </>

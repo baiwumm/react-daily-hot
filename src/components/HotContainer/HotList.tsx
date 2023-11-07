@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 16:01:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-03 17:47:52
+ * @LastEditTime: 2023-11-07 16:32:01
 */
 import 'dayjs/locale/zh-cn'
 
@@ -51,6 +51,11 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
       return result.data || []
     }
     return []
+  }, {
+    // 防抖等待时间, 单位为毫秒，设置后，进入防抖模式
+    debounceWait: 300,
+    // 错误重试次数。如果设置为 -1，则无限次重试。
+    retryCount: 3
   })
 
   /**
