@@ -4,12 +4,12 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 16:01:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-07 16:32:01
+ * @LastEditTime: 2023-11-08 17:22:54
 */
 import 'dayjs/locale/zh-cn'
 
 import { SyncOutlined } from '@ant-design/icons'
-import { useInterval, useRequest, useUnmount } from 'ahooks'
+import { useInterval, useRequest, useResponsive, useUnmount } from 'ahooks'
 import { Button, Card, ConfigProvider, Image, List, Result, Row, Skeleton, Space, Tag, Tooltip, Typography } from 'antd'
 import dayjs from 'dayjs'
 // 引入处理相对时间的插件
@@ -33,6 +33,8 @@ type HotListProps = {
 }
 
 const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryColor }) => {
+  // 获取响应式信息。
+  const { md } = useResponsive();
   // 实时更新时间
   const [relativeTime, setRelativeTime] = useState<string>('');
   /**
@@ -139,7 +141,7 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
                   <Text
                     className={styles.hotUrl}
                     ellipsis={{ tooltip: item.title }}
-                    onClick={() => window.open(item.url)}>
+                    onClick={() => window.open(md ? item.url : item.mobileUrl)}>
                     {item.title}
                   </Text>
                 </List.Item>
