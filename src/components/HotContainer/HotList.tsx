@@ -4,13 +4,13 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 16:01:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-08 17:22:54
+ * @LastEditTime: 2023-11-10 10:23:34
 */
 import 'dayjs/locale/zh-cn'
 
 import { SyncOutlined } from '@ant-design/icons'
 import { useInterval, useRequest, useResponsive, useUnmount } from 'ahooks'
-import { Button, Card, ConfigProvider, Image, List, Result, Row, Skeleton, Space, Tag, Tooltip, Typography } from 'antd'
+import { Button, Card, Col, ConfigProvider, Empty, Image, List, Result, Row, Skeleton, Space, Tag, Tooltip, Typography } from 'antd'
 import dayjs from 'dayjs'
 // 引入处理相对时间的插件
 import relativeTime from 'dayjs/plugin/relativeTime'
@@ -19,7 +19,7 @@ import { FC, ReactNode, useState } from 'react'
 
 import { LOCAL_KEY } from '@/enums'
 import type { HotListConfig, HotListItem, UpdateTime } from '@/types'
-import { getLocalStorageItem, setLocalStorageItem } from '@/utils'
+import { formatNumber, getLocalStorageItem, setLocalStorageItem } from '@/utils'
 
 import { hotTagColor, weiboLable } from './config'
 import styles from './index.module.scss'
@@ -113,7 +113,8 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
       <Card
         title={renderTitle}
         actions={renderFooter()}
-        bodyStyle={{ height: 300, overflow: 'hidden scroll', padding: '5px 20px' }}
+        headStyle={{ padding: '0 15px' }}
+        bodyStyle={{ height: 300, overflow: 'hidden scroll', padding: '5px 15px' }}
         hoverable
       >
         <Skeleton active loading={loading} paragraph={{ rows: 10 }}>
@@ -123,27 +124,41 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
             dataSource={get(data, 'list', [])}
             pagination={false}
             locale={{
-              emptyText: <Result
+              emptyText: data ? <Result
                 status="error"
                 title="加载失败"
                 subTitle="抱歉，可能服务器遇到问题了，请稍微重试。"
-              />
+              /> : <Empty />
             }}
             renderItem={(item: HotListItem, index: number) => {
               const hasWeiboLabel: boolean = eq(value, 'weibo') && item.label
               return (
                 <List.Item style={{ justifyContent: 'start' }}>
-                  <Tag
-                    bordered={false}
-                    color={hasWeiboLabel && item.label ? weiboLable[item.label] : (hotTagColor[index] || undefined)}>
-                    {hasWeiboLabel ? item.label : index + 1}
-                  </Tag>
-                  <Text
-                    className={styles.hotUrl}
-                    ellipsis={{ tooltip: item.title }}
-                    onClick={() => window.open(md ? item.url : item.mobileUrl)}>
-                    {item.title}
-                  </Text>
+                  <Row justify="space-between" gutter={10} align="middle" wrap={false} style={{ width: '100%' }}>
+                    <Col flex="none">
+                      <Tag
+                        bordered={false}
+                        style={{ marginInlineEnd: 0 }}
+                        color={hasWeiboLabel && item.label ? weiboLable[item.label] : (hotTagColor[index] || undefined)}>
+                        {hasWeiboLabel ? item.label : index + 1}
+                      </Tag>
+                    </Col>
+                    <Col flex="auto">
+                      <Text
+                        className={styles.hotUrl}
+                        ellipsis={{ tooltip: item.title }}
+                        onClick={() => window.open(md ? item.url : item.mobileUrl)}>
+                        {item.title}
+                      </Text>
+                    </Col>
+                    {
+                      item.hot && (
+                        <Col flex="none">
+                          <Text type='secondary' style={{ fontSize: 12 }}>{formatNumber(item.hot)}</Text>
+                        </Col>
+                      )
+                    }
+                  </Row>
                 </List.Item>
               )
             }}

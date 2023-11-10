@@ -1,3 +1,5 @@
+import { isNaN, round } from 'lodash-es'
+
 /**
  * @description: 获取 localstorage 的值
  * @author: 白雾茫茫丶
@@ -29,4 +31,19 @@ export const setLocalStorageItem = <T>(key: string, value: T) => {
  */
 export const removeLocalStorageItem = (key: string) => {
   localStorage.removeItem(key);
+}
+
+/**
+ * @description: 转化数字
+ * @author: 白雾茫茫丶
+ */
+export const formatNumber = (num: number | string): number | string => {
+  num = Number(num);
+  if (isNaN(num)) {
+    return num
+  }
+  const unit = '万';
+  num /= 10000;
+  num = round(num, 2);
+  return num + unit;
 }
