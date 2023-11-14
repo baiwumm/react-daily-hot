@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 15:51:30
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-07 15:50:06
+ * @LastEditTime: 2023-11-14 13:40:59
  */
 import { DownOutlined } from '@ant-design/icons'
 import { useInterval, useResponsive, useUnmount } from 'ahooks'
@@ -70,7 +70,7 @@ const Header: FC<HeaderProps> = ({ primaryColor, setPrimaryColor }) => {
   return (
     <div id="hot-header" style={{ background: token.colorBgContainer, boxShadow: token.boxShadowTertiary }}>
       <Row align='middle'>
-        <Col span={md ? 8 : 12}>
+        <Col {...md ? { span: 8 } : { flex: 'auto' }}>
           <Space>
             <Image src={Logo} alt="今日热榜" width={50} height={50} preview={false} />
             <Space direction="vertical" size={0} style={{ display: 'flex' }}>
@@ -102,7 +102,7 @@ const Header: FC<HeaderProps> = ({ primaryColor, setPrimaryColor }) => {
             }
           </Space>
         </Col>
-        <Col span={md ? 8 : 12}>
+        <Col {...md ? { span: 8 } : { flex: 'none' }}>
           <Row justify='end'>
             {/* 主题色 */}
             <Tooltip title="主题色">

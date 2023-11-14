@@ -170,7 +170,7 @@
         </svg>
       </div>
     </div>
-    <div style="display: flex; align-items: center; justify-content: center;font-size: 40px;font-weight: bold;gap:10px">
+    <div style="display: flex; align-items: center; justify-content: center;font-size: 2em;font-weight: bold;gap:10px">
       <img src="https://hot.baiwumm.com/logo.svg" alt="logo" width="50" />
       今日热榜
     </div>

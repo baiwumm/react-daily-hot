@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-11-01 08:55:11
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-03 16:54:05
+ * @LastEditTime: 2023-11-14 13:46:50
  */
 import { CopyrightOutlined, GithubOutlined } from '@ant-design/icons'
 import { Row, Space, Typography } from 'antd'
@@ -14,8 +14,8 @@ const { Text } = Typography;
 
 const Footer: FC = () => {
   return (
-    <Row style={{ padding: 30 }} justify="center" align="middle">
-      <Space size="small" align="center">
+    <Row style={{ padding: '1em' }} justify="center" align="middle">
+      <Space size="small" align="center" wrap style={{ justifyContent: 'center' }}>
         <Text type="secondary"><CopyrightOutlined /> Power by </Text>
         <a href="https://github.com/baiwumm" target="_blank" style={{ marginLeft: 10 }}>
           <Text type="secondary"><GithubOutlined style={{ marginRight: 5 }} />白雾茫茫丶</Text>
