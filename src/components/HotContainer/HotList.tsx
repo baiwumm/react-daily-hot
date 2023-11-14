@@ -4,18 +4,18 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 16:01:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-10 10:23:34
+ * @LastEditTime: 2023-11-14 14:30:26
 */
 import 'dayjs/locale/zh-cn'
 
 import { SyncOutlined } from '@ant-design/icons'
-import { useInterval, useRequest, useResponsive, useUnmount } from 'ahooks'
+import { useInterval, useInViewport, useRequest, useResponsive, useUnmount } from 'ahooks'
 import { Button, Card, Col, ConfigProvider, Empty, Image, List, Result, Row, Skeleton, Space, Tag, Tooltip, Typography } from 'antd'
 import dayjs from 'dayjs'
 // 引入处理相对时间的插件
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { eq, get } from 'lodash-es'
-import { FC, ReactNode, useState } from 'react'
+import { FC, ReactNode, useEffect, useRef, useState } from 'react'
 
 import { LOCAL_KEY } from '@/enums'
 import type { HotListConfig, HotListItem, UpdateTime } from '@/types'
@@ -35,6 +35,9 @@ type HotListProps = {
 const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryColor }) => {
   // 获取响应式信息。
   const { md } = useResponsive();
+  // 观察元素是否在可见区域
+  const ref = useRef(null);
+  const [inViewport] = useInViewport(ref);
   // 实时更新时间
   const [relativeTime, setRelativeTime] = useState<string>('');
   /**
@@ -54,6 +57,7 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
     }
     return []
   }, {
+    manual: true,
     // 防抖等待时间, 单位为毫秒，设置后，进入防抖模式
     debounceWait: 300,
     // 错误重试次数。如果设置为 -1，则无限次重试。
@@ -97,6 +101,13 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
   useUnmount(() => {
     clearInterval();
   })
+
+  // 只在可视范围内才加载数据
+  useEffect(() => {
+    if (!data && inViewport) {
+      run();
+    }
+  }, [inViewport])
   return (
     <ConfigProvider theme={{
       components: {
@@ -116,6 +127,7 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
         headStyle={{ padding: '0 15px' }}
         bodyStyle={{ height: 300, overflow: 'hidden scroll', padding: '5px 15px' }}
         hoverable
+        ref={ref}
       >
         <Skeleton active loading={loading} paragraph={{ rows: 10 }}>
           <List
