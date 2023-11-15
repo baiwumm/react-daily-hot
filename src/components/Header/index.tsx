@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 15:51:30
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-14 13:40:59
+ * @LastEditTime: 2023-11-15 09:41:51
  */
 import { DownOutlined } from '@ant-design/icons'
 import { useInterval, useResponsive, useUnmount } from 'ahooks'
@@ -12,7 +12,7 @@ import { Col, ColorPicker, ConfigProvider, Image, Row, Space, theme, Tooltip, Ty
 import type { Color } from 'antd/es/color-picker'
 import dayjs from 'dayjs'
 import calendar from 'js-calendar-converter'
-import { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 
 import Logo from '/logo.svg'
 import { LOCAL_KEY } from '@/enums'
@@ -58,6 +58,61 @@ const Header: FC<HeaderProps> = ({ primaryColor, setPrimaryColor }) => {
   }
 
   /**
+   * @description: 渲染 logo 和标题
+   */
+  const renderTitle = useMemo(() => (
+    <Space>
+      <Image src={Logo} alt="今日热榜" width={50} height={50} preview={false} />
+      <Space direction="vertical" size={0} style={{ display: 'flex' }}>
+        <ConfigProvider theme={{
+          components: {
+            Typography: {
+              titleMarginBottom: 0,
+              // 此 Token 不生效
+              titleMarginTop: 0,
+            }
+          }
+        }}>
+          <Title level={4} style={{ marginTop: 0 }}>今日热榜</Title>
+        </ConfigProvider>
+        {renderSecondary('汇聚全网热点，热门尽览无余')}
+      </Space>
+    </Space>
+  ), [])
+
+  /**
+   * @description: 渲染时间
+   */
+  const renderTime = useMemo(() => (
+    <Space direction="vertical" size={0} style={{ display: 'flex' }} align="center" className="hot-header-time">
+      {
+        nowTime ? (
+          <>
+            <Text>{nowTime}</Text>
+            {renderLunarCalendar()}
+          </>
+        ) : <Text type='secondary'>正在加载时间...</Text>
+      }
+    </Space>
+  ), [nowTime])
+
+  /**
+   * @description: 渲染主题色
+   */
+  const renderColor = useMemo(() => (
+    <Row justify='end'>
+      {/* 主题色 */}
+      <Tooltip title="主题色">
+        <ColorPicker
+          value={primaryColor}
+          onOpenChange={setOpenColor}
+          onChangeComplete={changeColor}
+          showText={() => <DownOutlined rotate={openColor ? 180 : 0} />} />
+      </Tooltip>
+    </Row>
+  ), [])
+
+  /**
    * @description: 实时时间定时器
    */
   const clearInterval = useInterval(() => {
@@ -67,54 +122,26 @@ const Header: FC<HeaderProps> = ({ primaryColor, setPrimaryColor }) => {
   useUnmount(() => {
     clearInterval()
   })
+
   return (
     <div id="hot-header" style={{ background: token.colorBgContainer, boxShadow: token.boxShadowTertiary }}>
-      <Row align='middle'>
-        <Col {...md ? { span: 8 } : { flex: 'auto' }}>
-          <Space>
-            <Image src={Logo} alt="今日热榜" width={50} height={50} preview={false} />
-            <Space direction="vertical" size={0} style={{ display: 'flex' }}>
-              <ConfigProvider theme={{
-                components: {
-                  Typography: {
-                    titleMarginBottom: 0,
-                    // 此 Token 不生效
-                    titleMarginTop: 0,
-                  }
-                }
-              }}>
-                <Title level={4} style={{ marginTop: 0 }}>今日热榜</Title>
-              </ConfigProvider>
-              {renderSecondary('汇聚全网热点，热门尽览无余')}
-            </Space>
-          </Space>
-        </Col>
-        <Col span={8} style={{ display: md ? 'block' : 'none' }}>
+      {md ? (
+        <Row align='middle'>
+          {/* 标题 */}
+          <Col span={8}>{renderTitle}</Col>
           {/* 实时日期 */}
-          <Space direction="vertical" size={0} style={{ display: 'flex' }} align="center" className="hot-header-time">
-            {
-              nowTime ? (
-                <>
-                  <Text>{nowTime}</Text>
-                  {renderLunarCalendar()}
-                </>
-              ) : <Text type='secondary'>正在加载时间...</Text>
-            }
-          </Space>
-        </Col>
-        <Col {...md ? { span: 8 } : { flex: 'none' }}>
-          <Row justify='end'>
-            {/* 主题色 */}
-            <Tooltip title="主题色">
-              <ColorPicker
-                value={primaryColor}
-                onOpenChange={setOpenColor}
-                onChangeComplete={changeColor}
-                showText={() => <DownOutlined rotate={openColor ? 180 : 0} />} />
-            </Tooltip>
-          </Row>
-        </Col>
-      </Row>
+          <Col span={8}>{renderTime}</Col>
+          {/* 主题色 */}
+          <Col span={8}>{renderColor}</Col>
+        </Row>
+      ) : (
+        <Row wrap={false}>
+          {/* 标题 */}
+          <Col flex="auto">{renderTitle}</Col>
+          {/* 主题色 */}
+          <Col flex="none">{renderColor}</Col>
+        </Row>
+      )}
     </div>
   )
 }
