@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 16:01:49
  * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-15 09:45:05
+ * @LastEditTime: 2023-11-15 09:51:32
 */
 import 'dayjs/locale/zh-cn'
 
@@ -140,7 +140,7 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
         }}
       />
     )
-  }, [data])
+  }, [data, md])
 
   /**
    * @description: 渲染底部
