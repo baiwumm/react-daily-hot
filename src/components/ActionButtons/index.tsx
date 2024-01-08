@@ -3,10 +3,10 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-11-02 09:07:36
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-06 09:30:17
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-01-08 10:21:02
  */
-import { ClearOutlined, HomeOutlined, SettingOutlined } from '@ant-design/icons';
+import { BarChartOutlined, ClearOutlined, HomeOutlined, SettingOutlined } from '@ant-design/icons';
 import { useBoolean } from 'ahooks'
 import { App, Card, Drawer, Flex, FloatButton, Image, Popconfirm, Space, Switch, Typography } from 'antd'
 import { concat, eq, filter, includes, map } from 'lodash-es'
@@ -131,6 +131,13 @@ const ActionButtons: FC<ActionButtonsProps> = ({ setHotConfig, filterHiddenHot, 
           icon={<SettingOutlined />}
           tooltip='热榜显示设置'
           onClick={() => setDrawerTrue()}
+        />
+        {/* 统计分析 */}
+        <FloatButton
+          href="https://analysis.baiwumm.com/share/n9tbiNiavjb2tZV8/"
+          target="_blank"
+          icon={<BarChartOutlined />}
+          tooltip='站点统计分析'
         />
         {/* 回到顶部 */}
         <FloatButton.BackTop visibilityHeight={100} tooltip='回到顶部' />
