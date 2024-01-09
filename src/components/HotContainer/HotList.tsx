@@ -4,7 +4,7 @@
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 16:01:49
  * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-01-09 17:06:23
+ * @LastEditTime: 2024-01-09 17:28:53
 */
 import 'dayjs/locale/zh-cn'
 
@@ -90,12 +90,15 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
                   <div
                     className="hot-index"
                     style={{
-                      background: hasWeiboLabel && item.label ? weiboLable[item.label] : (hotTagColor[index] || (isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0,0,0,.04)'))
+                      background: hasWeiboLabel && item.label ? weiboLable[item.label] : (hotTagColor[index] || (isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0,0,0,.04)')),
+                      color: !isDark && (weiboLable[item.label || ''] || hotTagColor[index]) ? '#ffffff' : 'inherit'
                     }}>
                     {hasWeiboLabel ? item.label : index + 1}
                   </div>
                   <div className="hot-title" onClick={() => window.open(item.url)}>{item.title}</div>
-                  {item.hot && <div className='hot-number'>{formatNumber(item.hot)}</div>}
+                  {item.hot && <div className='hot-number' style={{
+                    color: !isDark ? 'rgba(0, 0, 0, 0.45)' : 'inherit'
+                  }}>{formatNumber(item.hot)}</div>}
                 </div>
               </li>
             )
