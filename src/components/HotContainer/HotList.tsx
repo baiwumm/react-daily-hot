@@ -3,18 +3,18 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 16:01:49
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-15 09:51:32
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-01-09 17:06:23
 */
 import 'dayjs/locale/zh-cn'
 
 import { SyncOutlined } from '@ant-design/icons'
-import { useInterval, useRequest, useResponsive, useUnmount } from 'ahooks'
-import { Button, Card, Col, ConfigProvider, Empty, Image, List, Result, Row, Skeleton, Space, Tag, Tooltip, Typography } from 'antd'
+import { useInterval, useRequest, useUnmount } from 'ahooks'
+import { Button, Card, ConfigProvider, Image, Result, Row, Skeleton, Space, Tag, Tooltip, Typography } from 'antd'
 import dayjs from 'dayjs'
 // 引入处理相对时间的插件
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { eq, get } from 'lodash-es'
+import { eq, get, map } from 'lodash-es'
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { LOCAL_KEY } from '@/enums'
@@ -30,13 +30,12 @@ dayjs.locale('zh-cn')
 
 type HotListProps = {
   primaryColor: string;
+  isDark: boolean;
 }
 
-const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryColor }) => {
+const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryColor, isDark = false }) => {
   // 实时更新时间
   const [relativeTime, setRelativeTime] = useState<string>('');
-  // 获取响应式信息。
-  const { md } = useResponsive();
   /**
    * @description: 请求榜单接口
    */
@@ -81,66 +80,36 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
    */
   const renderContent = useMemo(() => {
     return (
-      <List
-        rowKey={(item) => item.id + item.hot}
-        size="small"
-        dataSource={get(data, 'list', [])}
-        pagination={false}
-        locale={{
-          emptyText: data ? <Result
-            status="error"
-            title="加载失败"
-            subTitle="抱歉，可能服务器遇到问题了，请稍微重试。"
-          /> : <Empty />
-        }}
-        renderItem={(item: HotListItem, index: number) => {
-          const hasWeiboLabel: boolean = eq(value, 'weibo') && item.label
-          return (
-            <List.Item style={{ justifyContent: 'start' }}>
-              <Row gutter={10} wrap={false} style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Col flex="none">
-                  <Tag
-                    bordered={false}
-                    style={{ marginInlineEnd: 0 }}
-                    color={hasWeiboLabel && item.label ? weiboLable[item.label] : (hotTagColor[index] || undefined)}>
+      data ? (
+        <ul className={styles['hot-container']}>
+          {map(get(data, 'list', []), (item: HotListItem, index: number) => {
+            const hasWeiboLabel: boolean = eq(value, 'weibo') && item.label
+            return (
+              <li key={item.id}>
+                <div className='hot-box'>
+                  <div
+                    className="hot-index"
+                    style={{
+                      background: hasWeiboLabel && item.label ? weiboLable[item.label] : (hotTagColor[index] || (isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0,0,0,.04)'))
+                    }}>
                     {hasWeiboLabel ? item.label : index + 1}
-                  </Tag>
-                </Col>
-                {md ? (
-                  <Col flex="auto">
-                    <Text
-                      className={styles.hotUrl}
-                      ellipsis={{ tooltip: item.title }}
-                      onClick={() => window.open(item.url)}
-                    >
-                      {item.title}
-                    </Text>
-                  </Col>
-                ) : (
-                  <Col flex="auto">
-                    <Text
-                      className={styles.hotUrl}
-                      ellipsis={{ tooltip: item.title }}
-                      onClick={() => window.open(item.mobileUrl)}
-                    >
-                      {item.title}
-                    </Text>
-                  </Col>
-                )}
-                {
-                  item.hot && (
-                    <Col flex="none">
-                      <Text type='secondary' style={{ fontSize: 12 }}>{formatNumber(item.hot)}</Text>
-                    </Col>
-                  )
-                }
-              </Row>
-            </List.Item>
-          )
-        }}
-      />
+                  </div>
+                  <div className="hot-title" onClick={() => window.open(item.url)}>{item.title}</div>
+                  {item.hot && <div className='hot-number'>{formatNumber(item.hot)}</div>}
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      ) : (
+        <Result
+          status="error"
+          title="加载失败"
+          subTitle="抱歉，可能服务器遇到问题了，请稍微重试。"
+        />
+      )
     )
-  }, [data, md])
+  }, [data, isDark])
 
   /**
    * @description: 渲染底部

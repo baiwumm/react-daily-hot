@@ -1,22 +1,63 @@
-.hotUrl{
-  position: relative;
-  transition: all .3s;
-  padding: 2px 0;
-  &:after{
-    position: absolute;
-    content: "";
-    height: 2px;
-    width:0px;
-    left:0;
-    bottom:0;
-    border-radius: 8px;
-    transition: all .3s;
-    background-color: var(--baiwu-hot-url-underline);
-  }
-  &:hover{
-    transform: translate(4px);
-    &:after{
-    width:100%;
+.hot-container {
+  margin: 0;
+  padding: 0;
+
+  :global {
+    li {
+      list-style: none;
+      padding: 8px 0;
+      border-block-end: 1px solid rgba(5, 5, 5, 0.06);
+    }
+
+    .hot-box {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+
+      .hot-index {
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        flex: 0 0 auto;
+      }
+
+      .hot-title {
+        align-self: flex-start;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1 1 auto;
+        position: relative;
+        transition: all .3s;
+        padding: 2px 0;
+
+        &:after {
+          position: absolute;
+          content: "";
+          height: 2px;
+          width: 0px;
+          left: 0;
+          bottom: 0;
+          border-radius: 8px;
+          transition: all .5s;
+          background-color: var(--baiwu-hot-url-underline);
+        }
+
+        &:hover {
+          transform: translate(4px);
+
+          &:after {
+            width: 100%;
+          }
+        }
+      }
+
+      .hot-number {
+        font-size: 12px;
+        flex: 0 0 auto;
+      }
     }
   }
 }

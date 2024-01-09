@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 15:29:07
- * @LastEditors: 白雾茫茫丶
- * @LastEditTime: 2023-11-07 15:50:54
+ * @LastEditors: 白雾茫茫丶<baiwumm.com>
+ * @LastEditTime: 2024-01-09 16:50:20
  */
 import { useLocalStorageState } from 'ahooks'
 import { App, ConfigProvider, theme } from 'antd'
@@ -16,6 +16,7 @@ import { Helmet } from 'react-helmet'
 import ActionButtons from '@/components/ActionButtons'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
+import SwitchColor from '@/components/Header/SwitchColor'
 import HotContainer from '@/components/HotContainer'
 import { LOCAL_KEY, THEME } from '@/enums'
 import type { HotListConfig, HotTypes, ThemeName } from '@/types'
@@ -55,9 +56,11 @@ function AppConatiner() {
       }}>
         <App>
           {/* 头部布局 */}
-          <Header primaryColor={primaryColor} setPrimaryColor={setPrimaryColor} />
+          <Header>
+            <SwitchColor setPrimaryColor={setPrimaryColor} />
+          </Header>
           {/* 今日热榜 */}
-          <HotContainer primaryColor={primaryColor} hotConfig={hotConfig} />
+          <HotContainer primaryColor={primaryColor} hotConfig={hotConfig} isDark={isDark} />
           {/* 底部版权 */}
           <Footer />
           {/* 悬浮按钮 */}
