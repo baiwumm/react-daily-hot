@@ -95,7 +95,11 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
                     }}>
                     {hasWeiboLabel ? item.label : index + 1}
                   </div>
-                  <div className="hot-title" onClick={() => window.open(item.url)}>{item.title}</div>
+                  <Tooltip title={item.title}>
+                    <div className="hot-title" onClick={() => window.open(item.url)}>
+                      {item.title}
+                    </div>
+                  </Tooltip>
                   {item.hot && <div className='hot-number' style={{
                     color: !isDark ? 'rgba(0, 0, 0, 0.45)' : 'inherit'
                   }}>{formatNumber(item.hot)}</div>}
