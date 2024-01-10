@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Author: 白雾茫茫丶
  * @Date: 2023-10-30 16:01:49
- * @LastEditors: 白雾茫茫丶<baiwumm.com>
- * @LastEditTime: 2024-01-09 17:28:53
+ * @LastEditors: 白雾茫茫丶
+ * @LastEditTime: 2024-01-10 21:28:58
 */
 import 'dayjs/locale/zh-cn'
 
@@ -95,11 +95,13 @@ const HotList: FC<HotListConfig & HotListProps> = ({ value, label, tip, primaryC
                     }}>
                     {hasWeiboLabel ? item.label : index + 1}
                   </div>
-                  <Tooltip title={item.title}>
-                    <div className="hot-title" onClick={() => window.open(item.url)}>
-                      {item.title}
-                    </div>
-                  </Tooltip>
+                  <Text
+                    className="hot-title"
+                    ellipsis={{ tooltip: item.title }}
+                    onClick={() => window.open(item.url)}
+                  >
+                    {item.title}
+                  </Text>
                   {item.hot && <div className='hot-number' style={{
                     color: !isDark ? 'rgba(0, 0, 0, 0.45)' : 'inherit'
                   }}>{formatNumber(item.hot)}</div>}
