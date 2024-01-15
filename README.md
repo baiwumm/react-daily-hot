@@ -58,7 +58,7 @@ vercel
 // 挂载生产
 vercel --prod
 ```
-> 具体教程可参考文章：[使用 Vercel 托管 Vue3 前端静态页面](https://baiwumm.com/post/d1c57d89.html)
+> 具体教程可参考文章：[如何使用 Vercel 托管静态网站](https://baiwumm.com/p/5zzij7bt)
 
 ## 其他
 > 如果想集成其他平台的热搜或热点 API，可以提 Issues
